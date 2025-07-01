@@ -74,20 +74,26 @@ Here we will describe the steps needed to build an agent.
 
 #### Folder Structure
 
-Provided in this repo, there is the `Weather Agent`.
-This is a fully working agent that allows a user to chat with an LLM, and fetches real time weather data for the provided location.
+This repository contains the **Chainex Monitor Agent** - a blockchain monitoring agent that tracks real-time on-chain activities across multiple blockchains.
 
-There are two main folders we need to pay attention to:
+The main agent folder is:
 
-- [src/mastra/agents/weather-agent/](./src/mastra/agents/weather-agent/)
-- [src/mastra/agents/your-agents/](./src/mastra/agents/your-agent/)
+- [src/mastra/agents/chainex-monitor/](./src/mastra/agents/chainex-monitor/)
 
-In `src/mastra/agents/weather-agent/` you will find a complete example of a working agent. Complete with Agent definition, API calls, interface definition, basically everything needed to get a full fledged working agent up and running.
-In `src/mastra/agents/your-agents/` you will find a bare bones example of the needed components, and imports to get started building your agent, we recommend you rename this folder, and it's files to get started.
+In `src/mastra/agents/chainex-monitor/` you will find a complete blockchain monitoring agent with:
+- Agent definition for blockchain monitoring
+- Custom tool for fetching real-time blockchain data
+- Support for multiple blockchains (Solana, Ethereum)
+- Transaction analysis and alerting capabilities
+- Comprehensive documentation and setup instructions
 
-Rename these files to represent the purpose of your agent and tools. You can use the [Weather Agent Example](#example:_weather_agent) as a guide until you are done with it, and then you can delete these files before submitting your final submission.
+The agent includes:
+- `index.ts` - Main agent definition
+- `tools/blockchain-monitor-tool.ts` - Blockchain data fetching tool
+- `blockchain-workflow.ts` - Advanced workflow for transaction analysis
+- `README.md` - Detailed documentation and usage examples
 
-As a bonus, for the ambitious ones, we have also provided the [src/mastra/agents/weather-agent/weather-workflow.ts](./src/mastra/agents/weather-agent/weather-workflow.ts) file as an example. This file contains an example of how you can chain agents and tools to create a workflow, in this case, the user provides their location, and the agent retrieves the weather for the specified location, and suggests an itinerary.
+This agent demonstrates how to build a production-ready blockchain monitoring solution using Mastra.
 
 ### LLM-Endpoint
 
@@ -285,7 +291,7 @@ Submissions will be evaluated based on:
 
 ### Prizes
 
-We’re awarding the **top 10 submissions**:
+We're awarding the **top 10 submissions**:
 
 - 🥇 1st: $1,000 USDC
 - 🥈 2nd: $750 USDC
@@ -322,7 +328,7 @@ All prizes are paid out directly to participants on [SuperTeam](https://supertea
 - **Announcement will be announced about one week later, stay tuned for our socials for exact date**
 - **Finalize your submission at [SuperTeam](https://earn.superteam.fun/agent-challenge)**
 
-### Don’t Miss Nosana Builder Challenge Updates
+### Don't Miss Nosana Builder Challenge Updates
 
 Good luck, builders! We can't wait to see the innovative AI agents you create for the Nosana ecosystem.
 **Happy Building!**
