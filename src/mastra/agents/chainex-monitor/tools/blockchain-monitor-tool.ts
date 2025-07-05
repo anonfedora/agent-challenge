@@ -1,6 +1,24 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { memory } from "../index";
+import { promises as fs } from "fs";
+import path from "path";
+
+// Simple file-based alert storage
+const ALERTS_FILE = path.join(process.cwd(), "alerts.json");
+
+async function loadAlerts(): Promise<any[]> {
+  try {
+    const data = await fs.readFile(ALERTS_FILE, "utf8");
+    return JSON.parse(data);
+  } catch (e) {
+    return [];
+  }
+}
+
+async function saveAlerts(alerts: any[]): Promise<void> {
+  await fs.writeFile(ALERTS_FILE, JSON.stringify(alerts, null, 2));
+}
 
 export const blockchainMonitorTool = createTool({
   id: "blockchain-monitor",
@@ -295,37 +313,27 @@ export const setupAlertTool = createTool({
     let alertConfig;
     try {
       const llmResponse = await callOllama(prompt);
-      alertConfig = JSON.parse(llmResponse);
+      console.log("[setupAlertTool] Raw LLM response:", llmResponse);
+      // Remove code block formatting if present
+      const cleaned = llmResponse.replace(/```json|```/g, '').trim();
+      alertConfig = JSON.parse(cleaned);
     } catch (e) {
       return { message: `Failed to parse alert config from LLM: ${e}` };
     }
-    // 2. Store the alert config in memory (per user/thread), appending to existing alerts (array-based)
+    
+    // 2. Store the alert config in file-based storage
     try {
-      // Fetch existing alerts
-      type WorkingMemoryResult = { workingMemory?: string } | null;
-      let existingAlerts: any[] = [];
-      const memoryResult = await memory.getWorkingMemory({ threadId, resourceId }) as WorkingMemoryResult;
-      if (memoryResult && typeof memoryResult === 'object' && memoryResult.workingMemory) {
-        try {
-          const parsed = JSON.parse(memoryResult.workingMemory);
-          if (Array.isArray(parsed)) {
-            existingAlerts = parsed;
-          } else if (parsed && typeof parsed === 'object') {
-            // Migrate legacy object format to array
-            existingAlerts = Object.values(parsed);
-          }
-        } catch (e) {
-          existingAlerts = [];
-        }
-      }
-      // Add the new alert
-      existingAlerts.push({ ...alertConfig, createdAt: Date.now(), active: true });
-      // Store the updated alerts array
-      await memory.updateWorkingMemory({
+      const alerts = await loadAlerts();
+      const newAlert = {
+        ...alertConfig,
         threadId,
         resourceId,
-        workingMemory: JSON.stringify(existingAlerts)
-      });
+        createdAt: Date.now(),
+        active: true
+      };
+      alerts.push(newAlert);
+      await saveAlerts(alerts);
+      
       // Also persist the agent's confirmation response as a message
       await memory.saveMessages({
         messages: [
@@ -341,7 +349,7 @@ export const setupAlertTool = createTool({
         ]
       });
     } catch (e) {
-      return { message: `Failed to store alert in memory: ${e}` };
+      return { message: `Failed to store alert: ${e}` };
     }
     return {
       message: `Alert set up successfully!`,

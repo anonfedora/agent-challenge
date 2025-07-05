@@ -1,8 +1,24 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { memory } from "../index";
+import { promises as fs } from "fs";
+import path from "path";
 
-type WorkingMemoryResult = { workingMemory?: string } | null;
+// Simple file-based alert storage
+const ALERTS_FILE = path.join(process.cwd(), "alerts.json");
+
+async function loadAlerts(): Promise<any[]> {
+  try {
+    const data = await fs.readFile(ALERTS_FILE, "utf8");
+    return JSON.parse(data);
+  } catch (e) {
+    return [];
+  }
+}
+
+async function saveAlerts(alerts: any[]): Promise<void> {
+  await fs.writeFile(ALERTS_FILE, JSON.stringify(alerts, null, 2));
+}
 
 export const listAlertsTool = createTool({
     id: "list-alerts",
@@ -16,22 +32,19 @@ export const listAlertsTool = createTool({
     }),
     execute: async ({ context }) => {
         const { threadId, resourceId } = context;
-        const memoryResult = await memory.getWorkingMemory({ threadId, resourceId }) as WorkingMemoryResult;
-        if (memoryResult && memoryResult.workingMemory) {
-            try {
-                const alerts = JSON.parse(memoryResult.workingMemory);
-                // Support both array and object legacy format
-                if (Array.isArray(alerts)) {
-                  return { alerts };
-                } else if (alerts && typeof alerts === 'object') {
-                  return { alerts: Object.values(alerts) };
-                }
-            } catch (e) {
-                console.error("Could not parse alerts from working memory", e);
-                return { alerts: [] };
-            }
+        try {
+            const alerts = await loadAlerts();
+            // Filter alerts by threadId and resourceId, and only active ones
+            const userAlerts = alerts.filter(alert => 
+                alert.threadId === threadId && 
+                alert.resourceId === resourceId && 
+                alert.active
+            );
+            return { alerts: userAlerts };
+        } catch (e) {
+            console.error("Could not retrieve alerts", e);
+            return { alerts: [] };
         }
-        return { alerts: [] };
     },
 });
 
@@ -47,18 +60,19 @@ export const checkAlertsTool = createTool({
     }),
     execute: async ({ context }) => {
         const { threadId, resourceId } = context;
-        const memoryResult = await memory.getWorkingMemory({ threadId, resourceId }) as WorkingMemoryResult;
-        
-        let alertCount = 0;
-        if (memoryResult && memoryResult.workingMemory) {
-            try {
-                const alerts = JSON.parse(memoryResult.workingMemory);
-                alertCount = Object.keys(alerts).length;
-                console.log(`Found ${alertCount} alerts to check:`, alerts);
-            } catch (e) {
-                console.error("Could not parse alerts from working memory", e);
-            }
+        try {
+            const alerts = await loadAlerts();
+            const userAlerts = alerts.filter(alert => 
+                alert.threadId === threadId && 
+                alert.resourceId === resourceId && 
+                alert.active
+            );
+            const alertCount = userAlerts.length;
+            console.log(`Found ${alertCount} alerts to check`);
+            return { checked: alertCount };
+        } catch (e) {
+            console.error("Could not retrieve alerts", e);
+            return { checked: 0 };
         }
-        return { checked: alertCount };
     },
 }); 
