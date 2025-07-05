@@ -332,3 +332,105 @@ All prizes are paid out directly to participants on [SuperTeam](https://supertea
 
 Good luck, builders! We can't wait to see the innovative AI agents you create for the Nosana ecosystem.
 **Happy Building!**
+
+## New Features
+
+### DeFi Risk Scoring Tool
+Assigns a risk score (Low/Medium/High) to Uniswap and Raydium pools based on:
+- Volume
+- Volatility
+- Impermanent loss
+- Smart contract audit status
+
+**How to use:**
+- Ask: "What is the risk level of the Uniswap USDC/ETH pool?"
+- Ask: "Give me a risk assessment for the Raydium WETH/USDC pool."
+- Ask: "Rate the risk for Raydium pool [address]."
+- Ask: "Assess the risk for Uniswap pool [address]."
+
+The agent will automatically route these queries to the risk scoring tool and return a risk score and explanation.
+
+### Generalized Arbitrage Tool
+- Supports arbitrage checks for **any token pair** between Uniswap and Raydium.
+- Dynamically resolves token symbols and finds the most liquid pools.
+- Example: "Check for arbitrage between USDC and WETH."
+
+### Natural Language Routing
+- The agent is now able to route natural language queries to the correct tool (e.g., risk scoring, arbitrage, protocol summaries) using few-shot prompt examples.
+- No need to use tool names directly—just ask in plain English.
+
+## Docker Usage
+
+### Build and Run with Docker
+```sh
+docker build -t yourusername/agent-challenge:latest .
+docker run -p 8080:8080 --env-file .env yourusername/agent-challenge:latest
+```
+
+### Using Docker Compose or Custom Env Files
+You can use Docker Compose or pass environment variables at runtime:
+- With Docker Compose, specify `env_file: .env` in your service definition.
+- Or, when running manually, use `--env-file .env` as shown above.
+
+## Environment Variables
+- See `.env.example` for required variables and example values.
+
+## Features & Prompt Examples
+
+### 1. Blockchain Monitoring Tool
+Monitors on-chain activity, transactions, and token transfers for supported chains.
+
+**Prompt Examples:**
+- Monitor transactions for address 0x123... on Ethereum.
+- Show recent token transfers for Solana address 9xQeWvG816bUx9EP.
+- Track balance changes for my wallet on Solana.
+- Show me the last 20 transactions for this Ethereum address: 0x388C818CA8B9251b393131C08a736A67ccB19297
+
+### 2. Generalized Arbitrage Tool
+Checks for arbitrage opportunities between Uniswap and Raydium for any token pair, dynamically resolving the best pools.
+
+**Prompt Examples:**
+- Check for arbitrage between USDC and WETH.
+- Is there an arbitrage opportunity for SOL and USDT?
+- Compare prices for ETH/USDC on Uniswap and Raydium.
+
+### 3. DeFi Protocol Summary Tool
+Summarizes activity and statistics for DeFi protocols and pools on Uniswap and Raydium.
+
+**Prompt Examples:**
+- Summarize the Uniswap USDC/ETH pool.
+- Give me a summary of the Raydium WETH/USDC pool.
+- What's the latest activity on Uniswap for USDT/DAI?
+
+### 4. DeFi Risk Scoring Tool
+Assigns a risk score (Low/Medium/High) to Uniswap and Raydium pools based on volume, volatility, impermanent loss, and audit status.
+
+**Prompt Examples:**
+- What is the risk level of the Uniswap USDC/ETH pool?
+- Give me a risk assessment for the Raydium WETH/USDC pool.
+- Rate the risk for Raydium pool DrdecJVzkaRsf1TQu1g7iFncaokikVTHqpzPjenjRySY.
+- Assess the risk for Uniswap pool 0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8.
+
+### 5. Alert Tools
+Set up, list, and check custom blockchain alerts for addresses or events.
+
+**Prompt Examples:**
+- Set an alert for large transactions on Uniswap.
+- List all my active alerts.
+- Check if any alerts have been triggered for my wallet.
+- Set an alert: "Alert me if Uniswap v3 pool 0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640 has a swap over $100,000 for 2 hours"
+
+### 6. Natural Language Routing
+You can use plain English for all queries. The agent will automatically route your request to the correct tool.
+
+**Prompt Examples:**
+- How risky is the Raydium pool DrdecJVzkaRsf1TQu1g7iFncaokikVTHqpzPjenjRySY?
+- Is there a price difference between Uniswap and Raydium for USDC/ETH?
+- Give me a summary of the Uniswap USDT/DAI pool.
+
+### 7. Raydium Pool Info & Stats
+Get detailed information and statistics for Raydium pools.
+
+**Prompt Examples:**
+- Show me the Raydium pool info for 3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv
+- Show me the 24h, 7d, and 30d stats for Raydium pool 3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv
