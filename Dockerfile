@@ -31,8 +31,5 @@ COPY . .
 # Build the project
 RUN pnpm run build
 
-# Override the default entrypoint
-ENTRYPOINT ["/bin/sh", "-c"]
-
 # Start Ollama service and pull the model, then run the app
-CMD ["ollama serve & sleep 5 && ollama pull ${MODEL_NAME_AT_ENDPOINT} && node .mastra/output/index.mjs"]
+CMD ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull ${MODEL_NAME_AT_ENDPOINT} && node .mastra/output/index.mjs"]
