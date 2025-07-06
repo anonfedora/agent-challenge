@@ -28,8 +28,5 @@ RUN pnpm install
 # Copy the rest of the application
 COPY . .
 
-# Build the project
-RUN pnpm run build
-
-# Start Ollama service and pull the model, then run the app
-CMD ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull ${MODEL_NAME_AT_ENDPOINT} && node .mastra/output/index.mjs"]
+# Start Ollama service and pull the model, then run the app in dev mode
+CMD ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull ${MODEL_NAME_AT_ENDPOINT} && pnpm run dev"]

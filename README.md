@@ -149,6 +149,42 @@ Before deploying your agent to Nosana, it's crucial to thoroughly test it locall
 4. **Check error handling** by providing invalid inputs or testing edge cases
 5. **Monitor the console logs** to ensure there are no runtime errors or warnings
 
+**Example Prompts for Blockchain Monitor Agent:**
+
+Try these specific prompts to test the blockchain monitoring functionality:
+
+**Transaction Monitoring:**
+```
+Show me the last 20 transactions for this Ethereum address:
+0x388C818CA8B9251b393131C08a736A67ccB19297
+```
+
+**Alert Setup:**
+```
+Set an alert: "Alert me if Uniswap v3 pool 0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640 has a swap over $100,000 for 2 hours"
+```
+
+**Raydium Pool Information:**
+```
+Show me the Raydium pool info for 3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv
+```
+
+**Raydium Pool Statistics:**
+```
+Show me the 24h, 7d, and 30d stats for Raydium pool 3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv
+```
+
+**Solana Chain Information:**
+```
+solana chain info
+```
+
+**Risk Assessment:**
+```
+What is the risk level of the Uniswap USDC/ETH pool?
+Give me a risk assessment for the Raydium WETH/USDC pool.
+```
+
 **Docker Testing:**
 After building your Docker container, test it locally before pushing to the registry:
 

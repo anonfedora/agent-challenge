@@ -97,6 +97,62 @@ Agent: "Based on the transaction data:
 - Alerts: Normal activity detected"
 ```
 
+### Specific Example Prompts
+
+**Ethereum Transaction Monitoring:**
+```
+User: "Show me the last 20 transactions for this Ethereum address: 0x388C818CA8B9251b393131C08a736A67ccB19297"
+
+Agent: "I'll fetch the recent Ethereum transactions for that address. Here are the last 20 transactions with details..."
+```
+
+**Alert Setup:**
+```
+User: "Set an alert: Alert me if Uniswap v3 pool 0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640 has a swap over $100,000 for 2 hours"
+
+Agent: "Alert set up successfully! I'll monitor the Uniswap v3 pool for swaps over $100,000..."
+```
+
+**Raydium Pool Information:**
+```
+User: "Show me the Raydium pool info for 3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv"
+
+Agent: "Here's the Raydium pool information: Pool type, TVL, current price, 24h volume, APR..."
+```
+
+**Raydium Pool Statistics:**
+```
+User: "Show me the 24h, 7d, and 30d stats for Raydium pool 3ucNos4NbumPLZNWztqGHNFFgkHeRMBQAVemeeomsUxv"
+
+Agent: "Here are the historical statistics for the Raydium pool:
+- 24h: $X volume, Y% APR
+- 7d: $X volume, Y% APR  
+- 30d: $X volume, Y% APR"
+```
+
+**Solana Chain Information:**
+```
+User: "solana chain info"
+
+Agent: "Here's the current Solana blockchain information:
+- Block Height: X
+- Current Epoch: Y
+- Absolute Slot: Z
+- Transaction Count: W"
+```
+
+**Risk Assessment:**
+```
+User: "What is the risk level of the Uniswap USDC/ETH pool?"
+
+Agent: "Risk Assessment for Uniswap USDC/ETH pool:
+- Risk Level: Medium
+- Volume: Low risk (high volume)
+- Volatility: Medium risk
+- Impermanent Loss: Low risk
+- Audit: Low risk (audited)"
+```
+
 ## Supported Blockchains
 
 ### Solana
