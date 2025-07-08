@@ -2,7 +2,7 @@ FROM ollama/ollama:0.7.0
 
 # Qwen2.5:1.5b - Docker
 ENV API_BASE_URL=http://127.0.0.1:11434/api
-ENV MODEL_NAME_AT_ENDPOINT=qwen2.5:1.32b
+ENV MODEL_NAME_AT_ENDPOINT=qwen2:1.5b
 
 # Qwen2.5:32b = Docker
 # ENV API_BASE_URL=http://127.0.0.1:11434/api
@@ -24,6 +24,8 @@ COPY .env.docker package.json pnpm-lock.yaml ./
 
 # Install dependencies
 RUN pnpm install
+
+# Pre-pull the Ollama model so it's available at runtime
 
 # Copy the rest of the application
 COPY . .
